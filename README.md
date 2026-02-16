@@ -71,3 +71,4 @@ npm run dev
 - `pages.update` a `media.create/update` jsou povoleny pouze přihlášeným uživatelům.
 - Frontend používá `GET /api/users/me` pro zjištění přihlášení.
 - Ukládání používá Payload REST API (`PATCH /api/pages/:id`, `POST /api/media`) s `credentials: include`.
+
