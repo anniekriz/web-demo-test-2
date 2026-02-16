@@ -1,0 +1,30 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #d1d5db;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.changeButton {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(17, 24, 39, 0.85);
+  color: #fff;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.hiddenInput {
+  display: none;
+}
