@@ -1,0 +1,38 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 20px 56px;
+}
+
+.footer {
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+  padding: 18px;
+  color: #6b7280;
+  background: #fff;
+}
+
+.saved {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: #16a34a;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.error {
+  color: #dc2626;
+  margin-top: 16px;
+}
