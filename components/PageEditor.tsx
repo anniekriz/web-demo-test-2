@@ -12,6 +12,13 @@ type Props = {
   initialPage: PageDoc
 }
 
+type MeResponse = {
+  user?: {
+    id: number
+    role?: 'admin' | 'editor' | 'viewer'
+  } | null
+}
+
 function areEqual(a: PageDoc, b: PageDoc) {
   return JSON.stringify(a) === JSON.stringify(b)
 }
