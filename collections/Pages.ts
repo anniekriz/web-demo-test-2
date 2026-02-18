@@ -1,11 +1,12 @@
 import type { CollectionConfig } from 'payload'
+import { isAdminOrEditor } from './access'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
-    create: ({ req }) => Boolean(req.user),
-    update: ({ req }) => Boolean(req.user),
-    delete: ({ req }) => Boolean(req.user),
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdminOrEditor,
     read: () => true,
   },
   admin: {

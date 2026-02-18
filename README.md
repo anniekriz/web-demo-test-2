@@ -10,10 +10,10 @@ Demo projekt s **Next.js 15 + Payload CMS + PostgreSQL**.
 - Seed skript vytvoří:
   - 1 stránku (`slug: home`) s českým obsahem
   - 2 média (hero + about) s českým `alt`
-  - admin uživatele `admin@example.com` / `admin12345`
+  - admin uživatele `admin@example.com` / `admin12345` (role `admin`)
 - View/Edit režim:
   - defaultně View
-  - pokud je uživatel přihlášený v Payload, zobrazí se tlačítko `Edit`
+  - tlačítko `Edit` se zobrazí pouze přihlášenému uživateli s rolí `admin` nebo `editor`
   - v Edit režimu jsou nahoře `Uložit` + `Exit`
   - inline text editace přes `contenteditable`
   - změna obrázku s okamžitým náhledem (cover crop, stabilní layout)
@@ -65,10 +65,10 @@ npm run dev
 
 - Web: `http://localhost:3000/home`
 - Admin: `http://localhost:3000/admin`
+- Login: `http://localhost:3000/admin/login`
 
 ## Poznámky k přístupům
 
-- `pages.update` a `media.create/update` jsou povoleny pouze přihlášeným uživatelům.
+- `pages.update` a `media.create/update` jsou povoleny pouze rolím `admin` nebo `editor`.
 - Frontend používá `GET /api/users/me` pro zjištění přihlášení.
 - Ukládání používá Payload REST API (`PATCH /api/pages/:id`, `POST /api/media`) s `credentials: include`.
-

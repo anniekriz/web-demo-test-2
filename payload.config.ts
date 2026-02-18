@@ -3,6 +3,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { Pages } from './collections/Pages'
 import { Media } from './collections/Media'
+import { Users } from './collections/Users'
 
 export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || 'dev-secret',
@@ -10,18 +11,7 @@ export default buildConfig({
   admin: {
     user: 'users',
   },
-  collections: [
-    {
-      slug: 'users',
-      auth: true,
-      admin: {
-        useAsTitle: 'email',
-      },
-      fields: [],
-    },
-    Media,
-    Pages,
-  ],
+  collections: [Users, Media, Pages],
   upload: {
     limits: {
       fileSize: 5_000_000,

@@ -3,7 +3,7 @@
 import styles from './Header.module.css'
 
 type Props = {
-  isLoggedIn: boolean
+  canEdit: boolean
   isEditMode: boolean
   isDirty: boolean
   isSaving: boolean
@@ -12,18 +12,18 @@ type Props = {
   onExit: () => void
 }
 
-export function Header({ isLoggedIn, isEditMode, isSaving, onEdit, onSave, onExit }: Props) {
+export function Header({ canEdit, isEditMode, isSaving, onEdit, onSave, onExit }: Props) {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.logo}>Neo World Weby</div>
         <div className={styles.actions}>
-          {isLoggedIn && !isEditMode && (
+          {canEdit && !isEditMode && (
             <button className={styles.primary} onClick={onEdit}>
               Edit
             </button>
           )}
-          {isLoggedIn && isEditMode && (
+          {canEdit && isEditMode && (
             <>
               <button className={styles.primary} onClick={onSave} disabled={isSaving}>
                 {isSaving ? 'Ukládám…' : 'Uložit'}
