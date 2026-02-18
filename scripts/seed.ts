@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { getPayload } from 'payload'
@@ -14,35 +16,19 @@ async function base64ToFile(filename: string, data: string) {
   return output
 }
 
-async function ensureAdminUser(payload: Awaited<ReturnType<typeof getPayload>>) {
-  const users = await payload.find({ collection: 'users', where: { email: { equals: 'admin@example.com' } }, limit: 1 })
-
-  if (!users.docs.length) {
-    await payload.create({
-      collection: 'users',
-      data: { email: 'admin@example.com', password: 'admin12345', role: 'admin' },
-    })
-
-    return
-  }
-
-  const existing = users.docs[0]
-  if (existing.role !== 'admin') {
-    await payload.update({
-      collection: 'users',
-      id: existing.id,
-      data: { role: 'admin' },
-    })
-  }
-}
-
 async function seed() {
   const payload = await getPayload({ config })
 
   const heroPath = await base64ToFile('hero.png', heroBase64)
   const aboutPath = await base64ToFile('about.png', aboutBase64)
 
-  await ensureAdminUser(payload)
+  const users = await payload.find({ collection: 'users', limit: 1 })
+  if (!users.docs.length) {
+    await payload.create({
+      collection: 'users',
+      data: { email: 'admin@example.com', password: 'admin12345' },
+    })
+  }
 
   const existing = await payload.find({
     collection: 'pages',

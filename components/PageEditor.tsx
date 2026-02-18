@@ -23,15 +23,11 @@ function areEqual(a: PageDoc, b: PageDoc) {
   return JSON.stringify(a) === JSON.stringify(b)
 }
 
-function canUserEdit(role?: 'admin' | 'editor' | 'viewer') {
-  return role === 'admin' || role === 'editor'
-}
-
 export function PageEditor({ initialPage }: Props) {
   const [original, setOriginal] = useState<PageDoc>(initialPage)
   const [draft, setDraft] = useState<PageDoc>(initialPage)
   const [isEditMode, setEditMode] = useState(false)
-  const [canEdit, setCanEdit] = useState(false)
+  const [isLoggedIn, setLoggedIn] = useState(false)
   const [isSaving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [savedNotice, setSavedNotice] = useState(false)
@@ -41,22 +37,7 @@ export function PageEditor({ initialPage }: Props) {
   const isDirty = useMemo(() => !areEqual(original, draft) || Boolean(heroUpload) || Boolean(aboutUpload), [original, draft, heroUpload, aboutUpload])
 
   useEffect(() => {
-    async function loadMe() {
-      try {
-        const res = await fetch('/api/users/me', { credentials: 'include' })
-        if (!res.ok) {
-          setCanEdit(false)
-          return
-        }
-
-        const data = (await res.json()) as MeResponse
-        setCanEdit(canUserEdit(data.user?.role))
-      } catch {
-        setCanEdit(false)
-      }
-    }
-
-    void loadMe()
+    fetch('/api/users/me', { credentials: 'include' }).then((res) => setLoggedIn(res.ok))
   }, [])
 
   const updateField = (field: keyof PageDoc, value: string) => {
@@ -80,11 +61,6 @@ export function PageEditor({ initialPage }: Props) {
   }
 
   const handleSave = async () => {
-    if (!canEdit) {
-      setError('Nemáte oprávnění pro uložení změn.')
-      return
-    }
-
     setSaving(true)
     setError(null)
     try {
@@ -158,7 +134,7 @@ export function PageEditor({ initialPage }: Props) {
   return (
     <div className={styles.page}>
       <Header
-        canEdit={canEdit}
+        isLoggedIn={isLoggedIn}
         isEditMode={isEditMode}
         isDirty={isDirty}
         isSaving={isSaving}
@@ -173,8 +149,8 @@ export function PageEditor({ initialPage }: Props) {
             subheadline={draft.heroSubheadline}
             ctaText={draft.heroCtaText}
             image={draft.heroImage}
-            editable={isEditMode && canEdit}
-            onChange={updateField as (field: 'heroHeadline' | 'heroSubheadline' | 'heroCtaText', value: string) => void}
+            editable={isEditMode}
+            onChange={updateField as any}
             pendingUpload={heroUpload}
             setPendingUpload={setHeroUpload}
           />
@@ -182,8 +158,8 @@ export function PageEditor({ initialPage }: Props) {
             heading={draft.aboutHeading}
             body={draft.aboutBody}
             image={draft.aboutImage}
-            editable={isEditMode && canEdit}
-            onChange={updateField as (field: 'aboutHeading' | 'aboutBody', value: string) => void}
+            editable={isEditMode}
+            onChange={updateField as any}
             pendingUpload={aboutUpload}
             setPendingUpload={setAboutUpload}
           />

@@ -12,7 +12,7 @@ type Props = {
 
 export function EditableText({ value, onChange, editable, className, multiline = false }: Props) {
   if (!editable) {
-    if (multiline) return <p className={className}>{value}</p>
+    if (multiline) return <div className={className}>{value}</div>
     return <span className={className}>{value}</span>
   }
 
